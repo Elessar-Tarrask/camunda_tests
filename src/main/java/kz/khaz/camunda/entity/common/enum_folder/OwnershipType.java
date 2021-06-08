@@ -1,8 +1,9 @@
-package kz.khaz.camunda.entity.enum_folder;
+package kz.khaz.camunda.entity.common.enum_folder;
 
 public enum OwnershipType {
     // TODO add other ownership types if necessary
-    IE("individual entrepreneur", "Индивидуальный предприниматель", 1);
+    IE("individual entrepreneur", "Индивидуальный предприниматель", 1),
+    LLP("Limited Liability Partnership", "Товарищество с ограниченной ответственностью", 2);
 
     public final String label;
     public final String label_rus;
