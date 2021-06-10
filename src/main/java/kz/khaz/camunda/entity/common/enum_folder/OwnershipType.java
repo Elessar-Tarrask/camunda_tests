@@ -1,5 +1,7 @@
 package kz.khaz.camunda.entity.common.enum_folder;
 
+import lombok.Data;
+
 public enum OwnershipType {
     // TODO add other ownership types if necessary
     IE("individual entrepreneur", "Индивидуальный предприниматель", 1),

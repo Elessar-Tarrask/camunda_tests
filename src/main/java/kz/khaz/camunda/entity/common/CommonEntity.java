@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import java.util.Set;
 import java.util.UUID;
 
 @Component
@@ -25,48 +28,24 @@ public class CommonEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    @NotNull
     private OwnershipType ownership_type;
 
+
+    @Column(length = 20)
+    private String organization_BIN;
     private String organization_name;
 
-    @Column(length = 50)
-    private String email_address;
-
-    @Column(length = 11)
-    private String phone_number;
-    private DocumentType executive_document_type;
-
-    private String document_identifier_front;
-    private String document_identifier_back;
-
-    private String entrepreneur_permission;
-
-    private String entrepreneur_procuration;
+    @OneToMany(mappedBy="id")
+    private Set<Documents> documents;
 
     private String address;
 
     @Column(length = 6)
     private String address_index;
 
-    @Column(length = 20)
-    private String IIK;
-
-    @Column(length = 20)
-    private String BIK;
-
-    private String bank_name;
-
-    private String office_phone_number;
-
-    private String office_email;
-
-    private Roles role;
-
-    @Column(columnDefinition = "boolean default false")
-    private Boolean active_account;
-
     private String password;
-
+//
     @Column(columnDefinition = "boolean default false")
     private Boolean collection_consent;
 
@@ -75,7 +54,4 @@ public class CommonEntity {
 
     @Column(columnDefinition = "boolean default false")
     private Boolean read_private_policy;
-
-    @Column(columnDefinition = "boolean default false")
-    private Boolean agreement_being_guarantor;
 }
