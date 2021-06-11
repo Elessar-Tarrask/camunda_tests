@@ -1,57 +1,40 @@
 package kz.khaz.camunda.entity.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import kz.khaz.camunda.entity.common.enum_folder.DocumentType;
 import kz.khaz.camunda.entity.common.enum_folder.OwnershipType;
 import kz.khaz.camunda.entity.common.enum_folder.Roles;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
-@Component
 @Data
-public class CommonEntity {
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+public class CommonEntity implements Serializable {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "id", updatable = false, nullable = false)
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
     private UUID id;
 
-    @NotNull
-    private OwnershipType ownership_type;
+    @JsonIgnore
+    @CreatedDate
+    private Date createdTime;
 
+    @JsonIgnore
+    @LastModifiedDate
+    private Date modifiedTime;
 
-    @Column(length = 20)
-    private String organization_BIN;
-    private String organization_name;
-
-    @OneToMany(mappedBy="id")
-    private Set<Documents> documents;
-
-    private String address;
-
-    @Column(length = 6)
-    private String address_index;
-
-    private String password;
-//
-    @Column(columnDefinition = "boolean default false")
-    private Boolean collection_consent;
-
-    @Column(columnDefinition = "boolean default false")
-    private Boolean pkb_request_consent;
-
-    @Column(columnDefinition = "boolean default false")
-    private Boolean read_private_policy;
 }

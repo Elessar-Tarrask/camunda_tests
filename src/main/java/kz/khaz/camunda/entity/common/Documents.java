@@ -1,20 +1,20 @@
 package kz.khaz.camunda.entity.common;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import kz.khaz.camunda.entity.BorrowerInformation;
 import kz.khaz.camunda.entity.common.enum_folder.DocumentType;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 
 /**
  * Таблица хранения внутренних документов директоров и руководителей подвязана
- *
+ * <p>
  * id - идентификатор
  * executive_document_name - наименование роли человека, учредитель или же руководитель, или же директор
  * executive_document_code - код для вышестоящего имени (если требуется)
@@ -25,18 +25,8 @@ import java.util.UUID;
  */
 @Entity
 @Data
-public class Documents {
-
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "id", updatable = false, nullable = false)
-    private UUID id;
-
-
+@EqualsAndHashCode(callSuper = false)
+public class Documents extends CommonEntity {
     @NotNull
     private String executives_identification_number;
     @NotNull
@@ -62,4 +52,8 @@ public class Documents {
     private String document_identifier_front;
     @NotNull
     private String document_identifier_back;
+
+    @ManyToOne
+    @JsonIgnore
+    private BorrowerInformation borrowerInformation;
 }

@@ -7,6 +7,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.UUID;
 
-@RepositoryRestResource(collectionResourceRel = "bankreq", path = "bankreq")
+@RepositoryRestResource(collectionResourceRel = "bankreq", path = "bankreq", exported=false)
 public interface BankRequisitesRepository extends PagingAndSortingRepository<BankRequisites, UUID> {
 }

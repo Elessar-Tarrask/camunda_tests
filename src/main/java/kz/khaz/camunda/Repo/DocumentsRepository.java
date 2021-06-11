@@ -9,6 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 
-@RepositoryRestResource(collectionResourceRel = "docs", path = "docs")
+@RepositoryRestResource(collectionResourceRel = "docs", path = "docs", exported=false)
 public interface DocumentsRepository extends PagingAndSortingRepository<Documents, UUID> {
 }
