@@ -50,7 +50,7 @@ public class BorrowerInformation extends CommonEntity {
     private BankRequisites bankRequisites;
 
     @NotNull
-    @ValidateEnum(targetClassType = OwnershipType.class, message = "Please select right String type")
+    @ValidateEnum(targetClassType = OwnershipType.class, message = "Please select right String type ['IE', 'LLP']")
     private String ownership_type;
 
 
