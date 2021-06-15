@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
@@ -34,6 +35,7 @@ public class Documents extends CommonEntity {
 
     @Column(length = 50)
     @NotNull
+    @Email
     private String email_address;
 
     @Column(length = 11)

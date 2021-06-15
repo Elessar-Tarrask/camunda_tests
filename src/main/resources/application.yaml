@@ -14,3 +14,7 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
+  data:
+    rest:
+      return-body-on-create: true
+      return-body-on-update: true

@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
@@ -13,18 +14,21 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = false)
 public class BankRequisites extends CommonEntity {
 
-    @Column(length = 20)
-    private String IIK;
+    @NotNull
+    private String iik;
 
-    @Column(length = 20)
-    private String BIK;
+    @NotNull
+    private String bik;
 
     @OneToOne(mappedBy = "bankRequisites")
     private BorrowerInformation borrowerInformation;
 
+    @NotNull
     private String bank_name;
 
+    @NotNull
     private String office_phone_number;
 
+    @NotNull
     private String office_email;
 }
