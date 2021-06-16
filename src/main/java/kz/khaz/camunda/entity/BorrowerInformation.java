@@ -2,6 +2,7 @@ package kz.khaz.camunda.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import kz.khaz.camunda.entity.common.BankRequisites;
 import kz.khaz.camunda.entity.common.CommonEntity;
 import kz.khaz.camunda.entity.common.Documents;
@@ -71,32 +72,35 @@ public class BorrowerInformation extends CommonEntity {
 //    private String password;
 
     @JsonIgnore
-    @Column(insertable = false, updatable = false)
     @AssertTrue
+    @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean collection_consent;
 
     @JsonIgnore
-    @Column(insertable = false, updatable = false)
     @AssertTrue
+    @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean pkb_request_consent;
 
     @JsonIgnore
-    @Column(insertable = false, updatable = false)
     @AssertTrue
+    @NotNull
     private Boolean read_private_policy;
 
     @JsonIgnore
-    @Column(insertable = false, updatable = false)
     @AssertTrue
+    @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean is_director_as_guarantor;
 
     @JsonIgnore
-    @Column(insertable = false, updatable = false)
     @AssertTrue
+    @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean provide_founder_personal_data;
 
     @JsonIgnore
-    @Column(insertable = false, updatable = false)
     private Boolean is_founder_legal_entity;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
