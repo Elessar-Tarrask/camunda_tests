@@ -72,33 +72,29 @@ public class BorrowerInformation extends CommonEntity {
 //    private String password;
 
     @JsonIgnore
-    @AssertTrue
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean collection_consent;
+    private Boolean collection_consent = true;
 
     @JsonIgnore
-    @AssertTrue
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean pkb_request_consent;
+    private Boolean pkb_request_consent = true;
 
     @JsonIgnore
-    @AssertTrue
-    @NotNull
-    private Boolean read_private_policy;
-
-    @JsonIgnore
-    @AssertTrue
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean is_director_as_guarantor;
+    private Boolean read_private_policy = true;
 
     @JsonIgnore
-    @AssertTrue
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean provide_founder_personal_data;
+    private Boolean is_director_as_guarantor = true;
+
+    @JsonIgnore
+    @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean provide_founder_personal_data = true;
 
     @JsonIgnore
     private Boolean is_founder_legal_entity;

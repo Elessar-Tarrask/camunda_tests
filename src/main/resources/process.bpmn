@@ -1,37 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0fr9mxs" targetNamespace="http://bpmn.io/schema/bpmn">
-  <bpmn:process id="test-process" isExecutable="true">
-    <bpmn:startEvent id="StartEvent_1">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0fr9mxs" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.8.1">
+  <bpmn:process id="borrower_registration_process" name="Регистрация заемщика" isExecutable="true">
+    <bpmn:startEvent id="borrower_registration" name="Borrower Registration">
       <bpmn:outgoing>SequenceFlow_1fp17al</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_1fp17al" sourceRef="StartEvent_1" targetRef="say-hello" />
+    <bpmn:sequenceFlow id="SequenceFlow_1fp17al" sourceRef="borrower_registration" targetRef="register" />
     <bpmn:endEvent id="EndEvent_0x6ir2l">
-      <bpmn:incoming>SequenceFlow_16gzt2m</bpmn:incoming>
+      <bpmn:incoming>Flow_1gfh47d</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="SequenceFlow_16gzt2m" sourceRef="say-hello" targetRef="EndEvent_0x6ir2l" />
-    <bpmn:userTask id="say-hello" name="Say hello to&#10;demo" camunda:candidateUsers="demo">
+    <bpmn:sequenceFlow id="SequenceFlow_16gzt2m" sourceRef="register" targetRef="decision_borrower" />
+    <bpmn:serviceTask id="register" name="Send user to manager" camunda:delegateExpression="${checkBorrowerInf}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="registrationId" />
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1fp17al</bpmn:incoming>
+      <bpmn:incoming>Flow_08gc7nd</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_16gzt2m</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0nmoebn" sourceRef="decision_borrower" targetRef="finish_process" />
+    <bpmn:userTask id="decision_borrower" name="Scoring manager decision">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="registrationId" />
+          <camunda:inputParameter name="activate">false</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_16gzt2m</bpmn:incoming>
+      <bpmn:outgoing>Flow_0nmoebn</bpmn:outgoing>
     </bpmn:userTask>
+    <bpmn:boundaryEvent id="Event_0xjwgad" attachedToRef="register">
+      <bpmn:outgoing>Flow_1f7c8fq</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0bl0w9g" errorRef="Error_1xnmp3u" />
+    </bpmn:boundaryEvent>
+    <bpmn:userTask id="errored_process" name="Процессы с ошибкой">
+      <bpmn:incoming>Flow_1f7c8fq</bpmn:incoming>
+      <bpmn:incoming>Flow_05l57mp</bpmn:incoming>
+      <bpmn:outgoing>Flow_08gc7nd</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1f7c8fq" sourceRef="Event_0xjwgad" targetRef="errored_process" />
+    <bpmn:sequenceFlow id="Flow_08gc7nd" sourceRef="errored_process" targetRef="register" />
+    <bpmn:sequenceFlow id="Flow_1gfh47d" sourceRef="finish_process" targetRef="EndEvent_0x6ir2l" />
+    <bpmn:boundaryEvent id="Event_1qjpb5k" attachedToRef="finish_process">
+      <bpmn:outgoing>Flow_05l57mp</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_0eee3w6" errorRef="Error_0l6x04o" />
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_05l57mp" sourceRef="Event_1qjpb5k" targetRef="errored_process" />
+    <bpmn:serviceTask id="finish_process" name="Активация заемщика" camunda:delegateExpression="${activateUser}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="registrationId" />
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0nmoebn</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gfh47d</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
+  <bpmn:error id="Error_1xnmp3u" name="RegistrationIdError" errorCode="202" camunda:errorMessage="No data found for such id" />
+  <bpmn:error id="Error_0l6x04o" name="RegistrationIdError" errorCode="202" camunda:errorMessage="No data found for such id" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="test-process">
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="179" y="99" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="SequenceFlow_1fp17al_di" bpmnElement="SequenceFlow_1fp17al">
-        <di:waypoint x="215" y="117" />
-        <di:waypoint x="270" y="117" />
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="borrower_registration_process">
+      <bpmndi:BPMNEdge id="Flow_0nmoebn_di" bpmnElement="Flow_0nmoebn">
+        <di:waypoint x="510" y="120" />
+        <di:waypoint x="600" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="EndEvent_0x6ir2l_di" bpmnElement="EndEvent_0x6ir2l">
-        <dc:Bounds x="432" y="99" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_16gzt2m_di" bpmnElement="SequenceFlow_16gzt2m">
-        <di:waypoint x="370" y="117" />
-        <di:waypoint x="432" y="117" />
+        <di:waypoint x="310" y="120" />
+        <di:waypoint x="410" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="UserTask_08mft2c_di" bpmnElement="say-hello">
-        <dc:Bounds x="270" y="77" width="100" height="80" />
+      <bpmndi:BPMNEdge id="SequenceFlow_1fp17al_di" bpmnElement="SequenceFlow_1fp17al">
+        <di:waypoint x="178" y="120" />
+        <di:waypoint x="210" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1f7c8fq_di" bpmnElement="Flow_1f7c8fq">
+        <di:waypoint x="280" y="178" />
+        <di:waypoint x="280" y="219" />
+        <di:waypoint x="390" y="219" />
+        <di:waypoint x="390" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08gc7nd_di" bpmnElement="Flow_08gc7nd">
+        <di:waypoint x="310" y="300" />
+        <di:waypoint x="220" y="300" />
+        <di:waypoint x="220" y="160" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gfh47d_di" bpmnElement="Flow_1gfh47d">
+        <di:waypoint x="700" y="120" />
+        <di:waypoint x="762" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05l57mp_di" bpmnElement="Flow_05l57mp">
+        <di:waypoint x="660" y="178" />
+        <di:waypoint x="660" y="300" />
+        <di:waypoint x="410" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="borrower_registration">
+        <dc:Bounds x="142" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="131" y="145" width="59" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0e2qdy9_di" bpmnElement="register">
+        <dc:Bounds x="210" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_09kwyl5_di" bpmnElement="errored_process">
+        <dc:Bounds x="310" y="260" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0x6ir2l_di" bpmnElement="EndEvent_0x6ir2l">
+        <dc:Bounds x="762" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14ctuxw_di" bpmnElement="decision_borrower">
+        <dc:Bounds x="410" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1kjlg75_di" bpmnElement="finish_process">
+        <dc:Bounds x="600" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1coz6no_di" bpmnElement="Event_0xjwgad">
+        <dc:Bounds x="262" y="142" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0nrsb86_di" bpmnElement="Event_1qjpb5k">
+        <dc:Bounds x="642" y="142" width="36" height="36" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
