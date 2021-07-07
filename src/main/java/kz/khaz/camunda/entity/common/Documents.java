@@ -58,4 +58,9 @@ public class Documents extends CommonEntity {
     @ManyToOne
     @JsonIgnore
     private BorrowerInformation borrowerInformation;
+
+    @Override
+    public String toString(){
+        return "Full name " + getExecutives_full_name() + ", email " + getEmail_address()+ ", phone number " + getPhone_number();
+    }
 }
